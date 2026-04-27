@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>제주 4박 5일 — 가족 여행</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sea: #2E7BA4; --deep: #1A4A62; --stone: #8B7355;
+    --coral: #E8704A; --moss: #5A7A5C; --cream: #FAF7F0;
+    --ink: #2A2420; --gold: #C8963C;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'Noto Sans KR',sans-serif; font-weight:300; overflow-x:hidden; }
+
+  /* HERO */
+  .hero {
+    position:relative; height:100vh; min-height:580px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:linear-gradient(160deg,#0d2b3e 0%,#1A4A62 40%,#2E7BA4 70%,#7EC8E3 100%);
+    overflow:hidden;
+  }
+  .hero-stars { position:absolute; inset:0; pointer-events:none; }
+  .star {
+    position:absolute; background:white; border-radius:50%;
+    animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s); opacity:0;
+  }
+  @keyframes twinkle { 0%,100%{opacity:0;transform:scale(.5)} 50%{opacity:1;transform:scale(1)} }
+  .hero-tag { font-size:.72rem; letter-spacing:.35em; color:#7EC8E3; text-transform:uppercase; margin-bottom:1.2rem; animation:fadeUp 1s ease both .3s; }
+  .hero-title { font-family:'Gowun Batang',serif; font-size:clamp(2.8rem,8vw,5.5rem); color:white; text-align:center; line-height:1.2; text-shadow:0 4px 40px rgba(0,0,0,.3); animation:fadeUp 1s ease both .5s; }
+  .hero-title em { font-style:normal; color:#FFD98E; }
+  .hero-sub { font-size:.9rem; color:rgba(255,255,255,.65); margin-top:1rem; letter-spacing:.1em; animation:fadeUp 1s ease both .7s; }
+  .hero-badges { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:2rem; animation:fadeUp 1s ease both .9s; }
+  .badge { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); backdrop-filter:blur(10px); border-radius:100px; padding:.45rem 1.2rem; font-size:.8rem; color:white; letter-spacing:.04em; }
+  .hero-waves { position:absolute; bottom:0; left:0; right:0; height:160px; }
+  .hero-waves svg { width:100%; height:100%; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+  /* SUMMARY */
+  .summary { background:var(--deep); color:white; padding:3rem 2rem; }
+  .summary-inner { max-width:900px; margin:0 auto; }
+  .sec-label { font-size:.68rem; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1.2rem; margin-top:1.2rem; }
+  .card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); border-radius:12px; padding:1.2rem; transition:background .3s; }
+  .card:hover { background:rgba(255,255,255,.12); }
+  .card-icon { font-size:1.5rem; margin-bottom:.5rem; }
+  .card-title { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.35rem; }
+  .card-val { font-family:'Gowun Batang',serif; font-size:.95rem; color:white; line-height:1.5; }
+
+  /* DAYS */
+  .days { max-width:900px; margin:0 auto; padding:4rem 1.5rem; }
+  .days-hd { text-align:center; margin-bottom:3rem; }
+  .days-hd h2 { font-family:'Gowun Batang',serif; font-size:clamp(1.7rem,4vw,2.4rem); color:var(--deep); }
+
+  .day-block { margin-bottom:3.5rem; opacity:0; transform:translateY(28px); transition:opacity .7s,transform .7s; }
+  .day-block.visible { opacity:1; transform:translateY(0); }
+
+  .day-hd { display:flex; align-items:center; gap:1.1rem; margin-bottom:1.4rem; }
+  .day-num { width:54px; height:54px; border-radius:50%; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Gowun Batang',serif; }
+  .day-num .d { font-size:.58rem; letter-spacing:.1em; opacity:.8; }
+  .day-num .n { font-size:1.35rem; font-weight:700; line-height:1; }
+  .day-1 .day-num { background:var(--deep); color:white; }
+  .day-2 .day-num { background:var(--moss); color:white; }
+  .day-3 .day-num { background:var(--sea); color:white; }
+  .day-4 .day-num { background:var(--stone); color:white; }
+  .day-5 .day-num { background:var(--coral); color:white; }
+
+  .day-tw { flex:1; }
+  .day-title { font-family:'Gowun Batang',serif; font-size:1.25rem; color:var(--ink); line-height:1.3; }
+  .day-date { font-size:.76rem; color:var(--stone); margin-top:.12rem; letter-spacing:.04em; }
+
+  .tl { padding-left:2rem; border-left:2px solid #E8E0D0; }
+  .tl-item { position:relative; padding:.75rem 0 .75rem 1.7rem; }
+  .tl-item::before { content:''; position:absolute; left:-7px; top:1.05rem; width:12px; height:12px; border-radius:50%; border:2px solid; background:var(--cream); }
+  .day-1 .tl-item::before { border-color:var(--deep); }
+  .day-2 .tl-item::before { border-color:var(--moss); }
+  .day-3 .tl-item::before { border-color:var(--sea); }
+  .day-4 .tl-item::before { border-color:var(--stone); }
+  .day-5 .tl-item::before { border-color:var(--coral); }
+  .tl-item.hl::before { background:var(--coral); border-color:var(--coral); box-shadow:0 0 0 4px rgba(232,112,74,.2); }
+
+  .tl-time { font-size:.7rem; font-weight:500; letter-spacing:.08em; color:var(--stone); margin-bottom:.18rem; }
+  .tl-row { display:flex; align-items:flex-start; gap:.6rem; flex-wrap:wrap; }
+  .tl-name { font-family:'Gowun Batang',serif; font-size:1.02rem; color:var(--ink); flex:1; min-width:150px; }
+  .tl-name strong { font-weight:700; }
+  .tl-desc { font-size:.8rem; color:#6B5E50; margin-top:.18rem; line-height:1.55; }
+
+  .tag { display:inline-block; font-size:.63rem; letter-spacing:.05em; border-radius:100px; padding:.18rem .65rem; font-weight:500; white-space:nowrap; flex-shrink:0; margin-top:.1rem; }
+  .t-meal  { background:#FDF0E6; color:var(--coral); border:1px solid #F5C9A8; }
+  .t-act   { background:#EAF4EA; color:var(--moss);  border:1px solid #B5D4B7; }
+  .t-move  { background:#E6F2FA; color:var(--sea);   border:1px solid #A8CEEA; }
+  .t-rest  { background:#F5F0E8; color:var(--stone); border:1px solid #D4C4A8; }
+  .t-key   { background:#FFF3E0; color:#B07020;      border:1px solid #F0C870; }
+
+  .hbox { background:linear-gradient(135deg,#FFF8F0,#FFF3E6); border:1px solid #F0C090; border-left:4px solid var(--coral); border-radius:8px; padding:.85rem 1rem; margin-top:.4rem; font-size:.81rem; color:var(--ink); line-height:1.6; }
+  .hbox strong { color:var(--coral); }
+  .hbox-blue { background:linear-gradient(135deg,#EEF6FC,#E6F3F0); border:1px solid #A8D4E8; border-left:4px solid var(--sea); border-radius:8px; padding:.85rem 1rem; margin-top:.5rem; font-size:.81rem; color:var(--ink); line-height:1.6; }
+  .hbox-blue strong { color:var(--sea); }
+
+  /* Dual route */
+  .dual { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin:.5rem 0 .2rem; }
+  @media(max-width:520px){ .dual{grid-template-columns:1fr;} }
+  .route { border-radius:10px; padding:.9rem 1rem; border:1.5px solid; }
+  .route-a { background:#EAF5FB; border-color:#7EC8E3; }
+  .route-b { background:#F0F7F0; border-color:#A8CFA8; }
+  .route-lbl { font-size:.63rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.3rem; }
+  .route-a .route-lbl { color:var(--sea); }
+  .route-b .route-lbl { color:var(--moss); }
+  .route-nm { font-family:'Gowun Batang',serif; font-size:.96rem; color:var(--ink); margin-bottom:.22rem; }
+  .route-desc { font-size:.77rem; color:#6B5E50; line-height:1.5; }
+
+  /* RISK */
+  .risk { background:linear-gradient(135deg,#1A2E3A,#0d2b3e); color:white; padding:3rem 2rem; }
+  .risk-inner { max-width:900px; margin:0 auto; }
+  .risk-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.1rem; margin-top:1.6rem; }
+  .rcard { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:10px; padding:1.2rem; }
+  .rcard-icon { font-size:1.35rem; margin-bottom:.45rem; }
+  .rcard-title { font-size:.75rem; letter-spacing:.1em; color:#FFD98E; margin-bottom:.35rem; text-transform:uppercase; }
+  .rcard-text { font-size:.82rem; color:rgba(255,255,255,.75); line-height:1.6; }
+
+  footer { background:var(--deep); color:rgba(255,255,255,.45); text-align:center; padding:1.8rem 2rem; font-size:.76rem; letter-spacing:.04em; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-stars" id="stars"></div>
+  <div class="hero-tag">Family Travel Planner</div>
+  <h1 class="hero-title">제주 4박 5일<br><em>가족 여행</em></h1>
+  <p class="hero-sub">바다와 숲과 별 사이에서</p>
+  <div class="hero-badges">
+    <div class="badge">🗓 2025년 5월 1일 (금)</div>
+    <div class="badge">✈ 5월 5일 (화) 귀환</div>
+    <div class="badge">🚐 카니발 9인승</div>
+  </div>
+  <div class="hero-waves">
+    <svg viewBox="0 0 1200 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 C200,130 400,20 600,75 C800,130 1000,20 1200,75 L1200,160 L0,160 Z" fill="#FAF7F0" opacity=".5"/>
+      <path d="M0,105 C150,55 350,145 600,95 C850,45 1050,155 1200,105 L1200,160 L0,160 Z" fill="#FAF7F0"/>
+    </svg>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="summary">
+  <div class="summary-inner">
+    <div class="sec-label">여행 개요</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🚐</div>
+        <div class="card-title">렌트 정보</div>
+        <div class="card-val">카니발 9인승<br>5/1 13:30 픽업 ~ 5/5 14:00 반납</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">3일차 전략</div>
+        <div class="card-val">스노클링 vs 호텔 수영장<br>당일 컨디션으로 선택</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🐟</div>
+        <div class="card-title">선정 식당</div>
+        <div class="card-val">해송갈치전문 (구글 4.9)<br>표선갈치조림 (구글 4.6)</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⭐</div>
+        <div class="card-title">액티비티</div>
+        <div class="card-val">미디어아트 · 숲속바이크<br>천문대 · 스누피가든</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section class="days">
+  <div class="days-hd">
+    <div class="sec-label" style="color:var(--stone)">DAY BY DAY</div>
+    <h2>하루하루의 이야기</h2>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-block day-1">
+    <div class="day-hd">
+      <div class="day-num"><span class="d">DAY</span><span class="n">1</span></div>
+      <div class="day-tw">
+        <div class="day-title">미디어아트와 자연주의 다이닝</div>
+        <div class="day-date">5월 1일 (금) · 공항 도착일</div>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">13:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🚐 카니발 렌트 픽업</div>
+          <div class="tl-desc">공항 인근 · 처남 주 운전 보조</div></div>
+          <span class="tag t-move">렌트</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">14:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🎨 아르떼뮤지엄 제주</div>
+          <div class="tl-desc">몰입형 미디어 아트 관람 — 빛과 소리의 체험 공간</div></div>
+          <span class="tag t-act">액티비티</span>
+        </div>
+      </div>
+      <div class="tl-item hl">
+        <div class="tl-time">16:30 ⚠ 출발</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🚗 안덕(비오토피아)으로 이동</div>
+          <div class="tl-desc">아내 & 장모님 카니발 안에서 편안히 휴식하며 이동</div></div>
+          <span class="tag t-move">이동</span>
+        </div>
+      </div>
+      <div class="tl-item hl">
+        <div class="tl-time">18:00 ★ 예약</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🌿 <strong>비오토피아 레스토랑</strong></div>
+          <div class="tl-desc">자연주의 코스 다이닝 · 조용하고 프라이빗한 분위기</div></div>
+          <span class="tag t-key">예약 완료</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">20:00</div>
+        <div class="tl-row">
+          <div class="tl-name">🏨 해비치 호텔 체크인 & 휴식</div>
+          <span class="tag t-rest">숙박</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-block day-2">
+    <div class="day-hd">
+      <div class="day-num"><span class="d">DAY</span><span class="n">2</span></div>
+      <div class="day-tw">
+        <div class="day-title">숲속 질주와 부자의 별밤</div>
+        <div class="day-date">5월 2일 (토) · 늦은 시작 권장</div>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">11:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🚲 반딧불숲속바이크</div>
+          <div class="tl-desc">전동 바이크로 숲 터널 주행 · 손 부상에도 조작 용이</div></div>
+          <span class="tag t-act">액티비티</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🍜 교래손칼국수</div>
+          <div class="tl-desc">닭칼국수 보양식</div></div>
+          <span class="tag t-meal">중식</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">15:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🌲 사려니숲길 (붉은오름)</div>
+          <div class="tl-desc">피톤치드 가득한 무장애 데크 산책</div></div>
+          <span class="tag t-act">산책</span>
+        </div>
+      </div>
+      <div class="tl-item hl">
+        <div class="tl-time">18:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🐟 <strong>성산일출봉해송갈치전문</strong></div>
+          <div class="tl-desc">갈치조림 & 구이 세트 · 넓고 깔끔한 공간 · 구글 4.9⭐</div></div>
+          <span class="tag t-key">석식</span>
+        </div>
+        <div class="hbox">🏆 성산 최고 평점 · 넓은 주차장 · 6인 대가족석 완비</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">19:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🏨 가족 숙소 드롭</div>
+          <div class="tl-desc">아내 · 장모님 · 딸 · 처남 숙소 귀가</div></div>
+          <span class="tag t-rest">귀가</span>
+        </div>
+      </div>
+      <div class="tl-item hl">
+        <div class="tl-time">21:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">⭐ <strong>서귀포천문과학문화관</strong></div>
+          <div class="tl-desc">아버지 & 아들 단둘이 — 별자리 관측 & 천체 탐험 · 예약 완료</div></div>
+          <span class="tag t-act">특별</span>
+        </div>
+        <div class="hbox">💫 <strong>부자(父子) 단독 미션</strong> — 오늘 밤의 별이 여행의 기억이 됩니다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-block day-3">
+    <div class="day-hd">
+      <div class="day-num"><span class="d">DAY</span><span class="n">3</span></div>
+      <div class="day-tw">
+        <div class="day-title">바다 탐험 vs 호텔 수영장</div>
+        <div class="day-date">5월 3일 (일) · 당일 컨디션으로 선택</div>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">10:30 — 13:30</div>
+        <div style="padding-top:.1rem">
+          <div class="tl-name" style="margin-bottom:.45rem">🔀 <strong>듀얼 루트 — 당일 아침 결정</strong></div>
+          <div class="dual">
+            <div class="route route-a">
+              <div class="route-lbl">🤿 Route A · 탐험형</div>
+              <div class="route-nm">코난해변 스노클링</div>
+              <div class="route-desc">처남 & 아들 스노클링<br>나머지 — 인카페 빈백 휴식 ☕<br>→ 13:30 곰막식당 (성게국수)</div>
+            </div>
+            <div class="route route-b">
+              <div class="route-lbl">🏊 Route B · 휴식형</div>
+              <div class="route-nm">해비치 수영장</div>
+              <div class="route-desc">삼촌 · 아이들 온수풀 물놀이<br>사용자 선베드 휴식 & 사진 📸<br>→ 13:00 호텔 인근 식당</div>
+            </div>
+          </div>
+          <div class="hbox-blue">💡 5월 초 바다 수온 낮음 · <strong>아내 컨디션 기준으로 결정</strong> 권장</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">15:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🐶 스누피가든</div>
+          <div class="tl-desc">아기자기한 캐릭터 가든 · 아이들 천국</div></div>
+          <span class="tag t-act">가족</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🐷 복돼지식당</div>
+          <div class="tl-desc">고사리 흑돼지 · 단백질 보충 · 구글 4.4⭐</div></div>
+          <span class="tag t-meal">석식</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-block day-4">
+    <div class="day-hd">
+      <div class="day-num"><span class="d">DAY</span><span class="n">4</span></div>
+      <div class="day-tw">
+        <div class="day-title">꽃밭 기차와 비자나무 숲</div>
+        <div class="day-date">5월 4일 (월)</div>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">10:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🌸 보롬왓</div>
+          <div class="tl-desc">꽃밭 기차 여행 · 딸아이 인생샷 촬영 📸</div></div>
+          <span class="tag t-act">사진</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🏛 성읍민속마을 한정식</div>
+          <div class="tl-desc">제주 전통 향토 밥상</div></div>
+          <span class="tag t-meal">중식</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">15:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🌳 비자림</div>
+          <div class="tl-desc">천년 비자나무 아래 조용한 숲 산책</div></div>
+          <span class="tag t-act">치유</span>
+        </div>
+      </div>
+      <div class="tl-item hl">
+        <div class="tl-time">18:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🐟 <strong>표선갈치조림</strong></div>
+          <div class="tl-desc">호텔 인근 · 갈치조림 & 구이 만찬 · 구글 4.6⭐</div></div>
+          <span class="tag t-key">특별 석식</span>
+        </div>
+        <div class="hbox">🌊 <strong>마지막 밤</strong>을 가성비 갈치 만찬으로 · 숙소 도보권</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day-block day-5">
+    <div class="day-hd">
+      <div class="day-num"><span class="d">DAY</span><span class="n">5</span></div>
+      <div class="day-tw">
+        <div class="day-title">어린이날과 안전한 귀가</div>
+        <div class="day-date">5월 5일 (화) · 어린이날</div>
+      </div>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">10:00</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🎈 호텔 수영장 물놀이 또는 표선 해변 산책</div>
+          <div class="tl-desc">키즈 프로그램 이용 시 체크인 즉시 사전 예약 확인 필수</div></div>
+          <span class="tag t-act">어린이날</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">11:30</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🍖 가시아방국수</div>
+          <div class="tl-desc">돔베고기 & 고기국수 · 구글 4.3⭐</div></div>
+          <span class="tag t-meal">중식</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13:30</div>
+        <div class="tl-row">
+          <div class="tl-name">🚗 공항 이동 & 주유</div>
+          <span class="tag t-move">이동</span>
+        </div>
+      </div>
+      <div class="tl-item hl">
+        <div class="tl-time">14:00 ⚠ 마감</div>
+        <div class="tl-row">
+          <div><div class="tl-name">🚐 렌터카 반납 <strong>(시간 엄수)</strong></div>
+          <div class="tl-desc">16:15 제주 출발</div></div>
+          <span class="tag t-move">귀환</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK -->
+<section class="risk">
+  <div class="risk-inner">
+    <div class="sec-label">유의사항 & 체크리스트</div>
+    <div class="risk-grid">
+      <div class="rcard">
+        <div class="rcard-icon">🌡</div>
+        <div class="rcard-title">수온 & 감기</div>
+        <div class="rcard-text">5월 초 바다는 차갑습니다. 스노클링 시 <strong>슈트 반드시 대여</strong>. 아들 감기 예방 위해 호텔 온수풀 우선 권장.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-icon">🛋</div>
+        <div class="rcard-title">아내 컨디션</div>
+        <div class="rcard-text">3일차에 누적 피로가 나타날 수 있음. 무리한 이동보다 <strong>호텔 수영장(루트 B)</strong>을 우선 검토하세요.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-icon">🥗</div>
+        <div class="rcard-title">식단 관리</div>
+        <div class="rcard-text">날것보다 <strong>조리된 음식</strong> 우선 주문. 갈치조림 & 구이는 모두 완전 가열 조리.</div>
+      </div>
+      <div class="rcard">
+        <div class="rcard-icon">🚐</div>
+        <div class="rcard-title">카니발 준비</div>
+        <div class="rcard-text">6인 탑승 후 짐 공간 넉넉 · 스노클링 대비 <strong>젖은 옷용 큰 비닐백</strong> 트렁크에 미리 준비.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>🌊 제주에서의 4박 5일이 온 가족의 소중한 기억이 되기를 바랍니다.</p>
+  <p style="margin-top:.4rem;opacity:.35">Travel Plan · May 2025 · Jeju Island</p>
+</footer>
+
+<script>
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 55; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 3 + 1;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*72}%;left:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s`;
+    starsEl.appendChild(s);
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.day-block').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
